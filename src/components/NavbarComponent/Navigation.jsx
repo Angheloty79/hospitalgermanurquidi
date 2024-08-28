@@ -49,7 +49,7 @@ AuthButtons.propTypes = {
   buttonClassName: PropTypes.string,
 };
 
-export function Navigation() {
+export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = useCallback(() => {

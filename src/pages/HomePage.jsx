@@ -1,7 +1,12 @@
-export function HomePage() {
+import CarsServise from "../components/HomeComponent/CardServiceComponent";
+import Portada from "../components/HomeComponent/PortadaComponent";
+
+export default function HomePage() {
   return (
-    <div>
-      <div className="p-4">Esto es una prueba de homepage</div>
-    </div>
+    <>
+    <Portada/>
+    <br></br>
+    <CarsServise/>
+    </>
   );
 }
