@@ -5,9 +5,10 @@ import HomePage from "./pages/HomePage";
 function App() {
   return (
     <>
-    <Navigation/>
+    
+      <Navigation />
       <Routes>
-        <Route path="/" element={<HomePage/>} />
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </>
   );
