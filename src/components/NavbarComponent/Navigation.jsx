@@ -57,6 +57,7 @@ AuthButtons.propTypes = {
 };
 
 // Componente principal de la cabecera con navegación y botones
+
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
