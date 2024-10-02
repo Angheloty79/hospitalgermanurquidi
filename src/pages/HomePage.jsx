@@ -1,4 +1,6 @@
+
 import { useEffect, useState } from "react";
+
 import CarsServise from "../components/HomeComponent/CardServiceComponent";
 import InfoCardHospital from "../components/HomeComponent/InfoHospitalComponent";
 import Portada from "../components/HomeComponent/PortadaComponent";
@@ -146,6 +148,6 @@ export default function HomePage() {
         dataimg={JobInfimg}
         parafo="El Hospital Materno Infantil “Germán Urquidi” es un centro de salud de tercer nivel especializado en Ginecología y Obstetricia. Su enfoque está dirigido a mujeres mayores de 19 años, brindando atención en áreas de alta complejidad. Desarrolla actividades de promoción, prevención, atención ambulatoria y hospitalización, así como curación, rehabilitación e investigación."
       />
-    </>
+
   );
 }

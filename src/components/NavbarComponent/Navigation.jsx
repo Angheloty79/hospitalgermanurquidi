@@ -1,12 +1,15 @@
 import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 // Constante global para los enlaces
 const links = [
-  { name: 'Tailwind CSS Tips', href: '#' },
-  { name: 'Videos', href: '#' },
-  { name: 'Blogs', href: '#' },
-  { name: 'Courses', href: '#' },
+  { name: 'Inicio', href: '#' },
+  { name: 'Quienes somos', href: '#' },
+  { name: 'Servicios', href: '#' },
+  { name: 'Actividades', href: '#' },
+  { name: 'Articulos', href: '#' },
+  { name: 'Contactanos', href: '#' },
 ];
 
 // Componente para la lista de enlaces
@@ -15,7 +18,15 @@ function NavLinks({ className = '', itemClassName = '', onClick }) {
     <ul className={`flex flex-col lg:flex-row lg:space-x-8 ${className}`}>
       {links.map((link) => (
         <li key={link.name} className={`hover:text-orange-400 ${itemClassName}`}>
-          <a href={link.href} onClick={onClick}>{link.name}</a>
+          {link.name === 'Contactanos' ? (
+            <Link to="/contactanos" onClick={onClick}>{link.name}</Link>
+          ) : link.name === 'Inicio' ? (
+            <Link to="/" onClick={onClick}>{link.name}</Link>
+          ) : link.name === 'Servicios' ? (
+            <Link to="/servicios" onClick={onClick}>{link.name}</Link>
+          ) : (
+            <a href={link.href} onClick={onClick}>{link.name}</a>
+          )}
         </li>
       ))}
     </ul>
@@ -30,14 +41,11 @@ NavLinks.propTypes = {
 };
 
 // Componente para los botones de login/sign up
-function AuthButtons({ className = '', buttonClassName = '' }) {
+function AuthButtons({ className = '' }) {
   return (
     <div className={`flex flex-col lg:flex-row ${className}`}>
-      <button className={`hover:text-orange-400 ${buttonClassName}`}>
-        Login
-      </button>
       <button className="bg-orange-400 text-white rounded-lg px-4 py-2 lg:ml-2">
-        Sign up
+        Reservar cita
       </button>
     </div>
   );
@@ -46,8 +54,9 @@ function AuthButtons({ className = '', buttonClassName = '' }) {
 // PropTypes para AuthButtons
 AuthButtons.propTypes = {
   className: PropTypes.string,
-  buttonClassName: PropTypes.string,
 };
+
+// Componente principal de la cabecera con navegación y botones
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,26 +65,22 @@ export default function Navigation() {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
 
-  const closeMenu = useCallback(() => {
-    setIsMenuOpen(false);
-  }, []);
-
   return (
-    <header className="bg-gray-800">
+    <header className="bg-gray-800 sticky top-0 z-50">
+      {/* Main Navigation */}
       <nav className="flex items-center justify-between px-6 py-4 lg:px-12 lg:py-0 h-16">
         <a href="#" className="text-white text-2xl font-bold">
-          Tailwind Anytime
+          H.M.I.G.U.
         </a>
         <div className="flex lg:hidden">
           <button
             type="button"
-            role="button"
             className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             aria-controls="mobile-menu"
             aria-expanded={isMenuOpen}
             onClick={toggleMenu}
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only">Toggle menu</span>
             {isMenuOpen ? (
               <svg
                 className="block h-6 w-6"
@@ -110,30 +115,23 @@ export default function Navigation() {
           </button>
         </div>
         <div
-          className={`${
-            isMenuOpen ? 'block' : 'hidden'
-          } w-full lg:flex lg:w-auto lg:items-center`}
-          id="mobile-menu"
+          className={`hidden lg:flex lg:items-center`}
+          id="desktop-menu"
         >
-          <NavLinks className="lg:mr-8 bg-gray-800 lg:bg-transparent divide-y lg:divide-y-0 divide-gray-700" itemClassName="text-white px-4 py-3 lg:py-0" onClick={closeMenu} />
-          <AuthButtons className="bg-gray-800 lg:bg-transparent px-4 lg:px-0 py-4 lg:py-0" buttonClassName="text-white px-4 py-2 lg:py-0" />
+          <NavLinks className="lg:mr-8" itemClassName="text-gray-200 px-4 py-3 lg:py-0" />
+          <AuthButtons />
         </div>
       </nav>
-      {/* Dropdown de pantalla completa */}
-      {isMenuOpen && (
-        <div
-          className="lg:hidden bg-gray-800 fixed inset-0 z-10 flex flex-col items-center justify-center"
-        >
-          <NavLinks className="space-y-6 text-center w-full" itemClassName="text-white text-2xl" onClick={closeMenu} />
-          <AuthButtons className="mt-8" buttonClassName="text-white text-xl px-4 py-2" />
-          <button
-            onClick={toggleMenu}
-            className="text-white text-3xl mt-8"
-          >
-            &times;
-          </button>
+
+      {/* Dropdown en pantalla pequeña con animación y tamaño reducido de texto */}
+      <div
+        className={`lg:hidden bg-gray-800 overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96' : 'max-h-0'}`}
+      >
+        <div className="p-4">
+          <NavLinks className="space-y-6 text-center w-full text-sm" itemClassName="text-white text-sm" onClick={toggleMenu} />
+          <AuthButtons className="mt-8" />
         </div>
-      )}
+      </div>
     </header>
   );
 }
