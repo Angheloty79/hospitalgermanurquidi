@@ -7,20 +7,20 @@ import Portada from "../components/HomeComponent/PortadaComponent";
 import { motion, AnimatePresence } from "framer-motion";
 import PortadaHome from "../components/HomeComponent/PortadaHome";
 
-import p1 from "../Imgs/Portada/P1.JPG";
-import p2 from "../Imgs/Portada/P2.JPG";
-import p3 from "../Imgs/Portada/P3.JPG";
-import p4 from "../Imgs/Portada/P4.JPG";
+import p1 from "../Imgs/Portada/P1.jpg";
+import p2 from "../Imgs/Portada/P2.jpg";
+import p3 from "../Imgs/Portada/P3.jpg";
+import p4 from "../Imgs/Portada/P4.jpg";
 
-import s1 from "../Imgs/ServiciosInfo/s1.JPG";
-import s2 from "../Imgs/ServiciosInfo/s2.JPG";
-import s3 from "../Imgs/ServiciosInfo/s3.JPG";
-import s4 from "../Imgs/ServiciosInfo/s4.JPG";
+import s1 from "../Imgs/ServiciosInfo/s1.jpg";
+import s2 from "../Imgs/ServiciosInfo/s2.jpg";
+import s3 from "../Imgs/ServiciosInfo/s3.jpg";
+import s4 from "../Imgs/ServiciosInfo/s4.jpg";
 
-import n1 from "../Imgs/NosotrosInfo/n1.JPG";
-import n2 from "../Imgs/NosotrosInfo/n2.JPG";
-import n3 from "../Imgs/NosotrosInfo/n3.JPG";
-import n4 from "../Imgs/NosotrosInfo/n4.JPG";
+import n1 from "../Imgs/NosotrosInfo/n1.jpg";
+import n2 from "../Imgs/NosotrosInfo/n2.jpg";
+import n3 from "../Imgs/NosotrosInfo/n3.jpg";
+import n4 from "../Imgs/NosotrosInfo/n4.jpg";
 
 const nuetrosServiso = [
   {
