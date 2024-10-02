@@ -14,7 +14,7 @@ import p4 from "../Imgs/Portada/P4.jpg";
 
 import s1 from "../Imgs/ServiciosInfo/s1.JPG";
 import s2 from "../Imgs/ServiciosInfo/s2.JPG";
-import s3 from "../Imgs/ServiciosInfo/s3.JPG";
+import s3 from "../Imgs/ServiciosInfo/s3.jpg";
 import s4 from "../Imgs/ServiciosInfo/s4.JPG";
 
 import n1 from "../Imgs/NosotrosInfo/n1.JPG";
