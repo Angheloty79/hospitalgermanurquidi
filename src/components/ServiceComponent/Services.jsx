@@ -1,5 +1,18 @@
 import { useState } from 'react';
 
+import ginecologiaImg  from '../../Imgs/ImgServices/IMG_6017.jpg';
+import obstetriciaImg from '../../Imgs/ImgServices/IMG_6411.jpg';
+import oncologiaImg from '../../Imgs/ImgServices/IMG_6713.jpg';
+import maternoFetalImg from '../../Imgs/ImgServices/IMG_6410.jpg';
+import neonatologiaImg from '../../Imgs/ImgServices/IMG_6209.jpg';
+import cardiologiaImg from '../../Imgs/ImgServices/IMG_6585.jpg';
+import medicinaDolorImg from '../../Imgs/ImgServices/IMG_6570.jpg';
+import odontologiaImg from '../../Imgs/ImgServices/IMG_6192.jpg';
+import fisioterapiaImg from '../../Imgs/ImgServices/IMG_6540.jpg';
+import nutricionImg from '../../Imgs/ImgServices/IMG_6826.jpg';
+import psicologiaImg from '../../Imgs/ImgServices/IMG_6600.jpg';
+
+
 const Services = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -9,75 +22,75 @@ const Services = () => {
       description:
         'Atención integral a la mujer con patologías relacionadas con los órganos femeninos como el útero, la vagina y los ovarios, además de la prevención de enfermedades futuras.',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+        ginecologiaImg,
     },
     {
       title: 'Obstetricia',
       description:
         'Atención integral a la mujer durante el parto y el puerperio, incluidas las situaciones de riesgo que requieren intervención quirúrgica.',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg',
+        obstetriciaImg,
     },
     {
       title: 'Oncología clínica y quirúrgica',
       description:
         'Diagnóstico y tratamiento del cáncer identificado en la mujer. Las acciones incluyen tratamiento en base a quimioterapia y cirugía referencia de pacientes para Radioterapia a la cuidad de La Paz.',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg',
+        oncologiaImg,
     },
     {
       title: 'Materno Fetal',
       description:
         'Subespecialidad que se encarga del manejo de los problemas de salud de la madre y el feto en el útero durante el embarazo, apoyados por ecografías de alta calidad.',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-05.jpg',
+        maternoFetalImg,
     },
     {
       title: 'Neonatología',
       description:
         'Subespecialidad que se ocupa del Diagnóstico y tratamiento de recién nacidos con afecciones tales como trastornos respiratorios, infecciones y defectos congénitos entre otros',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-05.jpg',
+        neonatologiaImg,
     },
     {
       title: 'Cardiología Neonatal',
       description: 'Subespecialidad que busca el bienestar del RN con enfermedades del corazón',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-05.jpg',
+        cardiologiaImg,
     },
     {
       title: 'Medicina del dolor',
       description:
         'Subespecialidad que busca el bienestar y cuidados de los enfermos con problemas de dolor por enfermedades como el cáncer y otros.',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-05.jpg',
+        medicinaDolorImg,
     },
     {
       title: 'Odontología',
       description:
         'El HMIGU pone al servicio de la población en general prestaciones odontológicas integrales para el cuidado de la salud Oral.',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-05.jpg',
+        odontologiaImg,
     },
     {
       title: 'Fisioterapia',
       description:
         'Ofrece tratamiento y rehabilitación física para diagnosticar, prevenir y tratar síntomas de múltiples patologías, tanto agudas como crónicas.',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-05.jpg',
+        fisioterapiaImg,
     },
     {
       title: 'Nutrición',
       description: 'Brinda soporte nutricional a pacientes internados',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-05.jpg',
+        nutricionImg,
     },
     {
       title: 'Psicología',
       description:
         'Las acciones se centran en ayudar a las pacientes a expresarse y normalizar las reacciones emocionales frente al diagnóstico hasta al alta.',
       image:
-        'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-05.jpg',
+        psicologiaImg,
     },
   ];
 
