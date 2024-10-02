@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
-import ginecologiaImg  from '../../Imgs/ImgServices/IMG_6017.jpg';
-import obstetriciaImg from '../../Imgs/ImgServices/IMG_6411.jpg';
-import oncologiaImg from '../../Imgs/ImgServices/IMG_6713.jpg';
-import maternoFetalImg from '../../Imgs/ImgServices/IMG_6410.jpg';
-import neonatologiaImg from '../../Imgs/ImgServices/IMG_6209.jpg';
-import cardiologiaImg from '../../Imgs/ImgServices/IMG_6585.jpg';
-import medicinaDolorImg from '../../Imgs/ImgServices/IMG_6570.jpg';
-import odontologiaImg from '../../Imgs/ImgServices/IMG_6192.jpg';
-import fisioterapiaImg from '../../Imgs/ImgServices/IMG_6540.jpg';
-import nutricionImg from '../../Imgs/ImgServices/IMG_6826.jpg';
-import psicologiaImg from '../../Imgs/ImgServices/IMG_6600.jpg';
+import ginecologiaImg  from '../../Imgs/ImgServices/IMG_6017.JPG';
+import obstetriciaImg from '../../Imgs/ImgServices/IMG_6411.JPG';
+import oncologiaImg from '../../Imgs/ImgServices/IMG_6713.JPG';
+import maternoFetalImg from '../../Imgs/ImgServices/IMG_6410.JPG';
+import neonatologiaImg from '../../Imgs/ImgServices/IMG_6209.JPG';
+import cardiologiaImg from '../../Imgs/ImgServices/IMG_6585.JPG';
+import medicinaDolorImg from '../../Imgs/ImgServices/IMG_6570.JPG';
+import odontologiaImg from '../../Imgs/ImgServices/IMG_6192.JPG';
+import fisioterapiaImg from '../../Imgs/ImgServices/IMG_6540.JPG';
+import nutricionImg from '../../Imgs/ImgServices/IMG_6826.JPG';
+import psicologiaImg from '../../Imgs/ImgServices/IMG_6600.JPG';
 
 
 const Services = () => {
