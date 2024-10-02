@@ -1,10 +1,9 @@
-
 import { useEffect, useState } from "react";
 
 import CarsServise from "../components/HomeComponent/CardServiceComponent";
 import InfoCardHospital from "../components/HomeComponent/InfoHospitalComponent";
 import Portada from "../components/HomeComponent/PortadaComponent";
-import portadaimg from "../Imgs/Portada/P1.JPG";
+
 import { motion, AnimatePresence } from "framer-motion";
 import PortadaHome from "../components/HomeComponent/PortadaHome";
 
@@ -102,7 +101,7 @@ const slides = [
 ];
 
 const SeveInfimg = [{ img: s1 }, { img: s2 }, { img: s3 }, { img: s4 }];
-const JobInfimg = [{ img:  n1 }, { img: n2 }, { img: n3 }, { img: n4 }];
+const JobInfimg = [{ img: n1 }, { img: n2 }, { img: n3 }, { img: n4 }];
 export default function HomePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -135,7 +134,7 @@ export default function HomePage() {
           </motion.div>
         </AnimatePresence>
       </div>
-
+      <CarsServise />
       <InfoCardHospital
         features={nuetrosServiso}
         info="Nuestro Sevicios"
@@ -148,6 +147,6 @@ export default function HomePage() {
         dataimg={JobInfimg}
         parafo="El Hospital Materno Infantil “Germán Urquidi” es un centro de salud de tercer nivel especializado en Ginecología y Obstetricia. Su enfoque está dirigido a mujeres mayores de 19 años, brindando atención en áreas de alta complejidad. Desarrolla actividades de promoción, prevención, atención ambulatoria y hospitalización, así como curación, rehabilitación e investigación."
       />
-
+    </>
   );
 }
