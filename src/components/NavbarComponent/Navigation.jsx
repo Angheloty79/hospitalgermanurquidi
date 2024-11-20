@@ -24,6 +24,8 @@ function NavLinks({ className = '', itemClassName = '', onClick }) {
             <Link to="/" onClick={onClick}>{link.name}</Link>
           ) : link.name === 'Servicios' ? (
             <Link to="/servicios" onClick={onClick}>{link.name}</Link>
+          ) :  link.name === 'Articulos' ? (
+            <Link to="/ariticulo" onClick={onClick}>{link.name}</Link>
           ) : (
             <a href={link.href} onClick={onClick}>{link.name}</a>
           )}

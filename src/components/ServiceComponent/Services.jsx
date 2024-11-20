@@ -1,50 +1,36 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
-
-// Importa las imágenes
-import ginecologiaImg from '../../Imgs/ImgServices/IMG_6017.JPG';
-import obstetriciaImg from '../../Imgs/ImgServices/IMG_6411.JPG';
-import oncologiaImg from '../../Imgs/ImgServices/IMG_6713.JPG';
-import maternoFetalImg from '../../Imgs/ImgServices/IMG_6410.JPG';
-import neonatologiaImg from '../../Imgs/ImgServices/IMG_6209.JPG';
-import cardiologiaImg from '../../Imgs/ImgServices/IMG_6585.JPG';
-import medicinaDolorImg from '../../Imgs/ImgServices/IMG_6570.JPG';
-import odontologiaImg from '../../Imgs/ImgServices/IMG_6192.JPG';
-import fisioterapiaImg from '../../Imgs/ImgServices/IMG_6540.JPG';
-import nutricionImg from '../../Imgs/ImgServices/IMG_6826.JPG';
-import psicologiaImg from '../../Imgs/ImgServices/IMG_6600.JPG';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useService } from "../../context/servicesContext";
 
 const Services = () => {
+  const { FetchServices } = useService(); // Usa el contexto para obtener los servicios
+  const [services, setServices] = useState([]);
+  const navigate = useNavigate();
+
+  // Obtener los servicios dinámicamente desde el backend
+  useEffect(() => {
+    const fetchAllServices = async () => {
+      const data = await FetchServices(); // Llama al método del contexto
+      setServices(data); // Guarda los datos en el estado
+    };
+
+    fetchAllServices();
+  }, [FetchServices]);
+
+  const itemsPerPage = 3; // Elementos por página
   const [currentIndex, setCurrentIndex] = useState(0);
-  const navigate = useNavigate(); // Inicializa useNavigate
-
-  const slides = [
-    { title: 'Ginecología', description: 'Atención integral a la mujer con patologías relacionadas con los órganos femeninos como el útero, la vagina y los ovarios, además de la prevención de enfermedades futuras.', image: ginecologiaImg },
-    { title: 'Obstetricia', description: 'Atención integral a la mujer durante el parto y el puerperio, incluidas las situaciones de riesgo que requieren intervención quirúrgica.', image: obstetriciaImg },
-    { title: 'Oncología', description: 'Diagnóstico y tratamiento del cáncer identificado en la mujer. Las acciones incluyen tratamiento en base a quimioterapia y cirugía referencia de pacientes para Radioterapia a la cuidad de La Paz.', image: oncologiaImg },
-    { title: 'Materno Fetal', description: 'Subespecialidad que se encarga del manejo de los problemas de salud de la madre y el feto en el útero durante el embarazo, apoyados por ecografías de alta calidad.', image: maternoFetalImg },
-    { title: 'Neonatología', description: 'Subespecialidad que se ocupa del Diagnóstico y tratamiento de recién nacidos con afecciones tales como trastornos respiratorios, infecciones y defectos congénitos entre otros', image: neonatologiaImg },
-    { title: 'Cardiología Neonatal', description: 'Subespecialidad que busca el bienestar del RN con enfermedades del corazón', image: cardiologiaImg },
-    { title: 'Medicina del dolor', description: 'Subespecialidad que busca el bienestar y cuidados de los enfermos con problemas de dolor por enfermedades como el cáncer y otros.', image: medicinaDolorImg },
-    { title: 'Odontología', description: 'El HMIGU pone al servicio de la población en general prestaciones odontológicas integrales para el cuidado de la salud Oral.', image: odontologiaImg },
-    { title: 'Fisioterapia', description: 'Ofrece tratamiento y rehabilitación física para diagnosticar, prevenir y tratar síntomas de múltiples patologías, tanto agudas como crónicas.', image: fisioterapiaImg },
-    { title: 'Nutrición', description: 'Brinda soporte nutricional a pacientes internados', image: nutricionImg },
-    { title: 'Psicología', description: 'Las acciones se centran en ayudar a las pacientes a expresarse y normalizar las reacciones emocionales frente al diagnóstico hasta al alta.', image: psicologiaImg },
-  ];
-
-  const itemsPerPage = 3;
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex - itemsPerPage < 0
-        ? Math.floor(slides.length / itemsPerPage) * itemsPerPage
+        ? Math.floor(services.length / itemsPerPage) * itemsPerPage
         : prevIndex - itemsPerPage
     );
   };
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex + itemsPerPage >= slides.length ? 0 : prevIndex + itemsPerPage
+      prevIndex + itemsPerPage >= services.length ? 0 : prevIndex + itemsPerPage
     );
   };
 
@@ -52,7 +38,9 @@ const Services = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-      {/* Carrusel */}
+      <h1 className="text-4xl font-bold mb-8 text-center">Nuestros Servicios</h1>
+
+      {/* Carrusel dinámico */}
       <div className="relative w-full max-w-6xl mx-auto mb-8 mt-16">
         <div className="overflow-hidden relative">
           {/* Flecha izquierda */}
@@ -76,7 +64,7 @@ const Services = () => {
             className="w-full flex transition-transform ease-in-out duration-500"
             style={{ transform: `translateX(${translateValue}%)` }}
           >
-            {slides.map((slide, index) => (
+            {services.map((service, index) => (
               <div
                 key={index}
                 className="flex-1 p-4 flex flex-col items-center"
@@ -84,13 +72,15 @@ const Services = () => {
               >
                 <div className="w-64 h-64 overflow-hidden rounded-md shadow-lg bg-white transform transition-transform duration-300 hover:scale-105">
                   <img
-                    src={slide.image}
-                    alt={slide.title}
+                    src={`http://localhost:1022/Imgs/ImgServices/${service.serviceImage}`} // Mostrar portada específica
+                    alt={service.serviceName}
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <h2 className="text-xl font-bold tracking-tight text-gray-800 mt-4">{slide.title}</h2>
-                <p className="text-sm text-gray-600 text-center max-w-xs mt-2">{slide.description}</p>
+                <h2 className="text-xl font-bold tracking-tight text-gray-800 mt-4">{service.serviceName}</h2>
+                <p className="text-sm text-gray-600 text-center max-w-xs mt-2">
+                  {service.serviceDescription}
+                </p>
               </div>
             ))}
           </div>
@@ -116,12 +106,11 @@ const Services = () => {
 
       {/* Botón "Agregar Servicio" */}
       <button
-        onClick={() => navigate('/crearServicios')} // Redirige a CreateServices
+        onClick={() => navigate("/crearServicios")} // Redirige a CreateServices
         className="mt-8 px-8 py-3 bg-black text-white font-semibold rounded-lg shadow-lg hover:bg-gray-800 hover:shadow-xl transform hover:scale-105 transition-all duration-300"
       >
-      Agregar Servicio
+        Agregar Servicio
       </button>
-
     </div>
   );
 };
