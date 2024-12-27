@@ -3,15 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { useService } from "../../context/servicesContext";
 
 const Services = () => {
-  const { FetchServices } = useService(); // Usa el contexto para obtener los servicios
+  const { FetchServices, DeleteService } = useService();
   const [services, setServices] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [serviceToDelete, setServiceToDelete] = useState(null);
   const navigate = useNavigate();
 
   // Obtener los servicios dinámicamente desde el backend
   useEffect(() => {
     const fetchAllServices = async () => {
-      const data = await FetchServices(); // Llama al método del contexto
-      setServices(data); // Guarda los datos en el estado
+      try {
+        const data = await FetchServices();
+        console.log("Servicios obtenidos:", data);
+        setServices(data);
+      } catch (error) {
+        console.error("Error al obtener los servicios:", error.message || error);
+      }
     };
 
     fetchAllServices();
@@ -35,6 +42,27 @@ const Services = () => {
   };
 
   const translateValue = -(currentIndex * (100 / itemsPerPage));
+
+  const handleDelete = (serviceId) => {
+    setServiceToDelete(serviceId);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      console.log("Eliminando servicio con ID:", serviceToDelete);
+      await DeleteService(serviceToDelete);
+
+      // Actualizar el estado del frontend
+      setServices((prev) => prev.filter((service) => service.serviceId !== serviceToDelete));
+      setShowDeleteModal(false);
+      setServiceToDelete(null);
+      console.log("Servicio eliminado exitosamente");
+    } catch (error) {
+      console.error("Error al eliminar el servicio:", error.message || error);
+      alert("No se pudo eliminar el servicio. Inténtalo de nuevo.");
+    }
+  };
 
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
@@ -64,18 +92,33 @@ const Services = () => {
             className="w-full flex transition-transform ease-in-out duration-500"
             style={{ transform: `translateX(${translateValue}%)` }}
           >
-            {services.map((service, index) => (
+            {services.map((service) => (
               <div
-                key={index}
+                key={service.serviceId}
                 className="flex-1 p-4 flex flex-col items-center"
                 style={{ flex: `0 0 ${100 / itemsPerPage}%` }}
               >
-                <div className="w-64 h-64 overflow-hidden rounded-md shadow-lg bg-white transform transition-transform duration-300 hover:scale-105">
+                <div className="relative w-64 h-64 overflow-hidden rounded-md shadow-lg bg-white transform transition-transform duration-300 hover:scale-105">
                   <img
-                    src={`http://localhost:1022/Imgs/ImgServices/${service.serviceImage}`} // Mostrar portada específica
+                    src={`http://localhost:1022/Imgs/ImgServices/${service.serviceImage}`}
                     alt={service.serviceName}
                     className="h-full w-full object-cover"
                   />
+                  {/* Botones de editar y eliminar */}
+                  <div className="absolute top-2 right-2 flex gap-2">
+                    <button
+                      onClick={() => navigate(`/actualizarServicios/${service.serviceId}`)}
+                      className="bg-gray-600 bg-opacity-50 text-white p-1 rounded-full hover:bg-opacity-80 w-8 h-8 flex items-center justify-center shadow-md"
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      onClick={() => handleDelete(service.serviceId)}
+                      className="bg-gray-600 bg-opacity-50 text-white p-1 rounded-full hover:bg-opacity-80 w-8 h-8 flex items-center justify-center shadow-md"
+                    >
+                      ❌
+                    </button>
+                  </div>
                 </div>
                 <h2 className="text-xl font-bold tracking-tight text-gray-800 mt-4">{service.serviceName}</h2>
                 <p className="text-sm text-gray-600 text-center max-w-xs mt-2">
@@ -106,11 +149,34 @@ const Services = () => {
 
       {/* Botón "Agregar Servicio" */}
       <button
-        onClick={() => navigate("/crearServicios")} // Redirige a CreateServices
+        onClick={() => navigate("/crearServicios")}
         className="mt-8 px-8 py-3 bg-black text-white font-semibold rounded-lg shadow-lg hover:bg-gray-800 hover:shadow-xl transform hover:scale-105 transition-all duration-300"
       >
         Agregar Servicio
       </button>
+
+      {/* Modal de confirmación */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96">
+            <h2 className="text-lg font-bold mb-4">¿Estás seguro de que deseas eliminar este servicio?</h2>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

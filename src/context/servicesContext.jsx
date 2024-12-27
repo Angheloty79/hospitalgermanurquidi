@@ -1,6 +1,8 @@
 import { createContext, useContext } from "react";
 import { createServices } from "../ApiR/services.api";
 import { getServices } from "../ApiR/getServices.api";
+import { updateServices } from "../ApiR/updateServices.api";
+import { deleteServices } from "../ApiR/deleteServices.api";
 
 export const AuthContext = createContext();
 
@@ -17,11 +19,14 @@ export const ServiceProvider = ({ children }) => {
       const response = await createServices(data);
       if (response.status === 200) {
         console.log("Servicio agregado exitosamente");
+        return response.data;
       } else {
-        console.error("Error al agregar servicio");
+        console.error("Error al agregar servicio:", response.data);
+        throw new Error("Error al agregar servicio");
       }
     } catch (error) {
       console.error("Error en AddServices:", error);
+      throw error;
     }
   };
 
@@ -33,15 +38,53 @@ export const ServiceProvider = ({ children }) => {
         console.log("Servicios obtenidos exitosamente:", response.data);
         return response.data; // Devolver los datos al frontend
       } else {
-        console.error("Error al obtener servicios");
+        console.error("Error al obtener servicios:", response.data);
+        throw new Error("Error al obtener servicios");
       }
     } catch (error) {
       console.error("Error en FetchServices:", error);
+      throw error;
+    }
+  };
+
+  // Función para actualizar un servicio
+  const UpdateService = async (id, data) => {
+    try {
+      const response = await updateServices(id, data);
+      if (response.status === 200) {
+        console.log("Servicio actualizado exitosamente");
+        return response.data;
+      } else {
+        console.error("Error al actualizar servicio:", response.data);
+        throw new Error("Error al actualizar servicio");
+      }
+    } catch (error) {
+      console.error("Error en UpdateService:", error);
+      throw error;
+    }
+  };
+
+  // Función para eliminar un servicio
+  const DeleteService = async (id) => {
+    try {
+      console.log("Enviando ID para eliminar:", id);
+      const response = await deleteServices(id);
+      if (response.status === 200) {
+        console.log("Servicio eliminado exitosamente:", response.data);
+        return response.data;
+      } else {
+        throw new Error(response.data.message || "Error desconocido al eliminar");
+      }
+    } catch (error) {
+      console.error("Error en DeleteService:", error.response?.data || error.message);
+      throw error;
     }
   };
 
   return (
-    <AuthContext.Provider value={{ AddServices, FetchServices }}>
+    <AuthContext.Provider
+      value={{ AddServices, FetchServices, UpdateService, DeleteService }}
+    >
       {children}
     </AuthContext.Provider>
   );
