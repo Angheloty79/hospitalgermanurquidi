@@ -52,7 +52,7 @@ const ContactUs = () => {
           {/* Google Maps */}
           <div className="w-full lg:w-1/2">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3827.792204168839!2d-66.14839!3d-17.38647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e373d0b1b1b1b1%3A0x8f71f6578ee17b77!2sHospital%20Materno%20Infantil%20Germ%C3%A1n%20Urquidi!5e0!3m2!1ses!2sbo!4v1683471190656!5m2!1ses!2sbo"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3827.792159207202!2d-66.1509253!3d-17.3863145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e37406da5365d1%3A0x6fc596ba1e29197a!2sGerm%C3%A1n%20Urquidi%2C%20Av.%20Aniceto%20Arce%2C%20Cochabamba!5e0!3m2!1ses!2sbo!4v1700000000000!5m2!1ses!2sbo"
               width="100%"
               height="400"
               allowFullScreen=""
@@ -60,6 +60,9 @@ const ContactUs = () => {
               className="rounded-lg shadow-lg"
             ></iframe>
           </div>
+
+
+
           {/* Formulario de contacto */}
           <div className="w-full lg:w-1/2 mt-8 lg:mt-0 lg:pl-8">
             <div className="contact-us-form bg-white p-8 rounded-lg shadow-lg">
@@ -151,7 +154,7 @@ const ContactUs = () => {
                 <h3 className="text-xl font-bold text-gray-800">
                   Mon - Sat: 8am - 5pm
                 </h3>
-                <p className="text-gray-600">Sunday Closed</p>
+                <p className="text-gray-600">24 Horas</p>
               </div>
             </div>
           </div>

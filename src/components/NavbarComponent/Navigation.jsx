@@ -7,7 +7,7 @@ const links = [
   { name: 'Inicio', href: '#' },
   { name: 'Quienes somos', href: '#' },
   { name: 'Servicios', href: '#' },
-  { name: 'Actividades', href: '#' },
+  { name: 'Eventos', href: '#' },
   { name: 'Articulos', href: '#' },
   { name: 'Contactanos', href: '#' },
 ];
@@ -30,7 +30,7 @@ function NavLinks({ className = '', itemClassName = '', onClick }) {
             <Link to="/servicios" onClick={onClick}>
               {link.name}
             </Link>
-          ) : link.name === 'Actividades' ? (
+          ) : link.name === 'Eventos' ? (
             <Link to="/actividades" onClick={onClick}>
               {link.name}
             </Link>

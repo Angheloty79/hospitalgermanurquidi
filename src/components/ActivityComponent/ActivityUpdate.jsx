@@ -1,15 +1,18 @@
 import { useForm } from "react-hook-form";
 import { useActivity } from "../../context/activityContext";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function Activity() {
+export default function ActivityUpdate() {
+  const { FetchActivities, activities, UpdateActivities } = useActivity();
+  const { id } = useParams(); // Obtener ID de la URL
   const navigate = useNavigate();
-  const { AddActivity } = useActivity();
+
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -23,9 +26,51 @@ export default function Activity() {
   });
 
   const esMultiDia = watch("esMultiDia");
-
+  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [existingImage, setExistingImage] = useState(null);
+  const [existingFile, setExistingFile] = useState(null);
+
+  useEffect(() => {
+    const fetchActivity = async () => {
+      try {
+        setLoading(true);
+
+        // Asegurarse de que las actividades estén cargadas
+        if (activities.length === 0) {
+          await FetchActivities();
+        }
+
+        const activity = activities.find((a) => a.activityId === parseInt(id));
+
+        if (activity) {
+          // Cargar datos en el formulario
+          setValue("title", activity.title);
+          setValue("esMultiDia", activity.multiDay);
+          setValue("dateStart", activity.dateStart.split("T")[0]);
+          setValue("timeStart", activity.dateStart.split("T")[1]?.substring(0, 5) || "");
+
+          if (activity.multiDay) {
+            setValue("dateEnd", activity.dateEnd.split("T")[0]);
+            setValue("timeEnd", activity.dateEnd.split("T")[1]?.substring(0, 5) || "");
+          }
+
+          setExistingImage(activity.imageAddress); // Imagen existente
+          setExistingFile(activity.fileAddress); // Archivo existente
+        } else {
+          console.error("Actividad no encontrada");
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error al obtener la actividad:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchActivity();
+  }, [FetchActivities, activities, id, setValue]);
 
   const onSubmit = async (data) => {
     try {
@@ -38,38 +83,46 @@ export default function Activity() {
       formData.append("timeStart", data.timeStart);
   
       // Campos opcionales
-      if (esMultiDia) {
-        formData.append("dateEnd", data.dateEnd || null);
-        formData.append("timeEnd", data.timeEnd || null);
+      if (esMultiDia && data.dateEnd) {
+        formData.append("dateEnd", data.dateEnd);
+      }
+      if (esMultiDia && data.timeEnd) {
+        formData.append("timeEnd", data.timeEnd);
       }
   
-      // Verifica que los archivos existan antes de adjuntarlos
-      if (selectedImage) {
-        formData.append("file", selectedImage);
-      } else {
-        console.warn("No se seleccionó ninguna imagen.");
+      // Validar y agregar imagen o archivo seleccionado
+      if (selectedImage || selectedFile) {
+        const file = selectedImage || selectedFile;
+  
+        if (file.size > 0) {
+          formData.append("file", file);
+        } else {
+          alert("El archivo seleccionado no es válido.");
+          return;
+        }
       }
   
-      if (selectedFile) {
-        formData.append("file", selectedFile);
-      } else {
-        console.warn("No se seleccionó ningún archivo adicional.");
-      }
+      // Llamar a la función de actualización de la actividad
+      await UpdateActivities(id, formData);
   
-      // Log para verificar los datos que se están enviando
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
-  
-      const response = await AddActivity(formData);
-      console.log("Actividad registrada exitosamente:", response);
-      alert("Actividad registrada con éxito");
-      navigate("/actividadesLista")
+      // Mensaje de confirmación y redirección
+      alert("Actividad actualizada con éxito");
+      navigate("/actividades");
     } catch (error) {
-      console.error("Error al registrar la actividad:", error);
-      alert("Hubo un error al registrar la actividad.");
+      console.error("Error al actualizar la actividad:", error);
+  
+      // Manejo de errores
+      if (error.response && error.response.data) {
+        alert(`Error: ${error.response.data.message}`);
+      } else {
+        alert("Hubo un error al actualizar la actividad. Por favor, revisa los datos e intenta de nuevo.");
+      }
     }
-  };
+  };  
+
+  if (loading) {
+    return <div className="text-center py-12">Cargando actividad...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -79,7 +132,7 @@ export default function Activity() {
       >
         <div className="py-8 px-6 sm:px-10">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-8">
-            Formulario de Actividades
+            Actualizar Actividad
           </h2>
 
           <div className="space-y-6">
@@ -96,7 +149,7 @@ export default function Activity() {
               {errors.title && <p className="mt-2 text-sm text-red-600">{errors.title.message}</p>}
             </div>
 
-            {/* Checkbox de evento de varios días */}
+            {/* Evento de varios días */}
             <div className="flex items-center">
               <input
                 id="esMultiDia"
@@ -113,7 +166,7 @@ export default function Activity() {
             <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="dateStart" className="block text-sm font-medium text-gray-700">
-                  {esMultiDia ? "Fecha de inicio" : "Fecha del evento"}
+                  Fecha de inicio
                 </label>
                 <input
                   type="date"
@@ -121,27 +174,8 @@ export default function Activity() {
                   {...register("dateStart", { required: "Este campo es requerido" })}
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
-                {errors.dateStart && (
-                  <p className="mt-2 text-sm text-red-600">{errors.dateStart.message}</p>
-                )}
               </div>
 
-              {esMultiDia && (
-                <div>
-                  <label htmlFor="dateEnd" className="block text-sm font-medium text-gray-700">
-                    Fecha de fin
-                  </label>
-                  <input
-                    type="date"
-                    id="dateEnd"
-                    {...register("dateEnd")}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="timeStart" className="block text-sm font-medium text-gray-700">
                   Hora de inicio
@@ -153,8 +187,22 @@ export default function Activity() {
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
+            </div>
 
-              {esMultiDia && (
+            {esMultiDia && (
+              <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="dateEnd" className="block text-sm font-medium text-gray-700">
+                    Fecha de fin
+                  </label>
+                  <input
+                    type="date"
+                    id="dateEnd"
+                    {...register("dateEnd")}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
+
                 <div>
                   <label htmlFor="timeEnd" className="block text-sm font-medium text-gray-700">
                     Hora de fin
@@ -166,54 +214,73 @@ export default function Activity() {
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
-            {/* Subir archivos */}
+            {/* Imagen existente */}
+            {existingImage && (
+              <div>
+                <p className="text-sm text-gray-500 mb-2">Imagen actual:</p>
+                <img
+                  src={`/uploads/${existingImage}`}
+                  alt="Imagen actual"
+                  className="max-w-full h-auto"
+                />
+              </div>
+            )}
+
+            {/* Subir nueva imagen */}
             <div>
               <label htmlFor="imagen" className="block text-sm font-medium text-gray-700">
-                Imagen
+                Actualizar Imagen (opcional)
               </label>
               <input
                 id="imagen"
                 type="file"
                 accept="image/*"
-                className="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded file:border-0 file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200"
+                className="mt-2 block w-full"
                 onChange={(e) => setSelectedImage(e.target.files[0])}
               />
             </div>
 
+            {/* Archivo existente */}
+            {existingFile && (
+              <div>
+                <p className="text-sm text-gray-500 mb-2">Archivo actual:</p>
+                <a
+                  href={`/uploads/${existingFile}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 underline"
+                >
+                  Descargar archivo
+                </a>
+              </div>
+            )}
+
+            {/* Subir nuevo archivo */}
             <div>
               <label htmlFor="archivo" className="block text-sm font-medium text-gray-700">
-                Archivo
+                Actualizar Archivo (opcional)
               </label>
               <input
                 id="archivo"
                 type="file"
                 accept=".pdf,.doc,.docx"
-                className="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded file:border-0 file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200"
+                className="mt-2 block w-full"
                 onChange={(e) => setSelectedFile(e.target.files[0])}
               />
             </div>
           </div>
 
-          {/* Botón de enviar */}
           <div className="mt-8">
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Enviar
+              Actualizar Actividad
             </button>
           </div>
-          <br/>
-          {/* Botón "Agregar Servicio" */}
-          <button
-            onClick={() => navigate("/actividadesLista")}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Ver Lista
-          </button>
         </div>
       </form>
     </div>
