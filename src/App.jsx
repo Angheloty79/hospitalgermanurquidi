@@ -10,20 +10,25 @@ import ArticulePage from "./pages/ArticlePage";
 
 /// Contexto para compartir los datos
 import { ArticleProvider } from "./context/articuleContext";
+import { ServiceProvider } from "./context/servicesContext";
+import WhoPage from "./pages/WhoPage";
 
 function App() {
   return (
     <>
-      <Navigation />
+    <ServiceProvider>
       <ArticleProvider>
+        <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/contactanos" element={<ContactUs />} />
           <Route path="/servicios" element={<Services />} />
           <Route path="/crearServicios" element={<CreateServices />} />
           <Route path="/ariticulo" element={<ArticulePage />} />
+          <Route path="/quienesSomos" element={<WhoPage/>}/>
         </Routes>
       </ArticleProvider>
+      </ServiceProvider>
       <Footer />
     </>
   );

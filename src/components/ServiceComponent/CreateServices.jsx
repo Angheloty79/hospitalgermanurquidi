@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import {useService} from "../../context/servicesContext"
 
 export default function CreateServices() {
+
+  const {AddServices,prueba} = useService();
+
   const [serviceName, setServiceName] = useState('');
   const [serviceDescription, setServiceDescription] = useState('');
   const [serviceType, setServiceType] = useState('');
@@ -31,7 +35,7 @@ export default function CreateServices() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ serviceName, serviceDescription, serviceType, images });
+    AddServices({ serviceName, serviceDescription, serviceType, images });
   };
 
   return (
