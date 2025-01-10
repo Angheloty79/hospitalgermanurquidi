@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import CarsServise from "../components/HomeComponent/CardServiceComponent";
+import CardActivityComponent from "../components/HomeComponent/CardActivityComponent";
 import InfoCardHospital from "../components/HomeComponent/InfoHospitalComponent";
 import Portada from "../components/HomeComponent/PortadaComponent";
 
@@ -117,6 +118,7 @@ export default function HomePage() {
   return (
     <>
       <PortadaHome />
+      <CardActivityComponent/>
       <div className="relative   overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div

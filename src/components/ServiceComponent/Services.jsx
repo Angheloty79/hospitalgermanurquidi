@@ -1,127 +1,200 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
-
-// Importa las imágenes
-import ginecologiaImg from '../../Imgs/ImgServices/IMG_6017.JPG';
-import obstetriciaImg from '../../Imgs/ImgServices/IMG_6411.JPG';
-import oncologiaImg from '../../Imgs/ImgServices/IMG_6713.JPG';
-import maternoFetalImg from '../../Imgs/ImgServices/IMG_6410.JPG';
-import neonatologiaImg from '../../Imgs/ImgServices/IMG_6209.JPG';
-import cardiologiaImg from '../../Imgs/ImgServices/IMG_6585.JPG';
-import medicinaDolorImg from '../../Imgs/ImgServices/IMG_6570.JPG';
-import odontologiaImg from '../../Imgs/ImgServices/IMG_6192.JPG';
-import fisioterapiaImg from '../../Imgs/ImgServices/IMG_6540.JPG';
-import nutricionImg from '../../Imgs/ImgServices/IMG_6826.JPG';
-import psicologiaImg from '../../Imgs/ImgServices/IMG_6600.JPG';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useService } from "../../context/servicesContext";
 
 const Services = () => {
+  const { FetchServices, DeleteService } = useService();
+  const [services, setServices] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [serviceToDelete, setServiceToDelete] = useState(null);
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const navigate = useNavigate(); // Inicializa useNavigate
 
-  const slides = [
-    { title: 'Ginecología', description: 'Atención integral a la mujer con patologías relacionadas con los órganos femeninos como el útero, la vagina y los ovarios, además de la prevención de enfermedades futuras.', image: ginecologiaImg },
-    { title: 'Obstetricia', description: 'Atención integral a la mujer durante el parto y el puerperio, incluidas las situaciones de riesgo que requieren intervención quirúrgica.', image: obstetriciaImg },
-    { title: 'Oncología', description: 'Diagnóstico y tratamiento del cáncer identificado en la mujer. Las acciones incluyen tratamiento en base a quimioterapia y cirugía referencia de pacientes para Radioterapia a la cuidad de La Paz.', image: oncologiaImg },
-    { title: 'Materno Fetal', description: 'Subespecialidad que se encarga del manejo de los problemas de salud de la madre y el feto en el útero durante el embarazo, apoyados por ecografías de alta calidad.', image: maternoFetalImg },
-    { title: 'Neonatología', description: 'Subespecialidad que se ocupa del Diagnóstico y tratamiento de recién nacidos con afecciones tales como trastornos respiratorios, infecciones y defectos congénitos entre otros', image: neonatologiaImg },
-    { title: 'Cardiología Neonatal', description: 'Subespecialidad que busca el bienestar del RN con enfermedades del corazón', image: cardiologiaImg },
-    { title: 'Medicina del dolor', description: 'Subespecialidad que busca el bienestar y cuidados de los enfermos con problemas de dolor por enfermedades como el cáncer y otros.', image: medicinaDolorImg },
-    { title: 'Odontología', description: 'El HMIGU pone al servicio de la población en general prestaciones odontológicas integrales para el cuidado de la salud Oral.', image: odontologiaImg },
-    { title: 'Fisioterapia', description: 'Ofrece tratamiento y rehabilitación física para diagnosticar, prevenir y tratar síntomas de múltiples patologías, tanto agudas como crónicas.', image: fisioterapiaImg },
-    { title: 'Nutrición', description: 'Brinda soporte nutricional a pacientes internados', image: nutricionImg },
-    { title: 'Psicología', description: 'Las acciones se centran en ayudar a las pacientes a expresarse y normalizar las reacciones emocionales frente al diagnóstico hasta al alta.', image: psicologiaImg },
-  ];
+  useEffect(() => {
+    const fetchAllServices = async () => {
+      try {
+        const data = await FetchServices();
+        setServices(data);
+      } catch (error) {
+        console.error("Error al obtener los servicios:", error.message || error);
+      }
+    };
 
-  const itemsPerPage = 3;
+    fetchAllServices();
+  }, [FetchServices]);
+
+  const handleDelete = (serviceId) => {
+    setServiceToDelete(serviceId);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await DeleteService(serviceToDelete);
+      setServices((prev) => prev.filter((service) => service.serviceId !== serviceToDelete));
+      setShowDeleteModal(false);
+      setServiceToDelete(null);
+
+      // Ajustar el índice si el servicio eliminado es el último visible
+      if (currentIndex >= services.length - 1) {
+        setCurrentIndex((prev) => Math.max(prev - 1, 0));
+      }
+    } catch (error) {
+      console.error("Error al eliminar el servicio:", error.message || error);
+    }
+  };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex - itemsPerPage < 0
-        ? Math.floor(slides.length / itemsPerPage) * itemsPerPage
-        : prevIndex - itemsPerPage
-    );
+    if (services.length > 0) {
+      setCurrentIndex((prevIndex) => (prevIndex === 0 ? services.length - 1 : prevIndex - 1));
+    }
   };
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex + itemsPerPage >= slides.length ? 0 : prevIndex + itemsPerPage
-    );
+    if (services.length > 0) {
+      setCurrentIndex((prevIndex) => (prevIndex === services.length - 1 ? 0 : prevIndex + 1));
+    }
   };
 
-  const translateValue = -(currentIndex * (100 / itemsPerPage));
-
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-gradient-to-b from-blue-50 to-indigo-100 min-h-screen flex flex-col items-center">
+      {/* Encabezado */}
+      <header className="w-full bg-transparent text-black py-6 text-center">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-indigo-700">
+          Nuestros Servicios
+        </h1>
+        <p className="mt-2 text-lg font-medium text-gray-600">
+          Explora nuestra variedad de servicios diseñados para ti.
+        </p>
+      </header>
+
       {/* Carrusel */}
-      <div className="relative w-full max-w-6xl mx-auto mb-8 mt-16">
-        <div className="overflow-hidden relative">
-          {/* Flecha izquierda */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 h-12 w-12 bg-transparent text-white rounded-full shadow-lg hover:bg-opacity-80 hover:scale-110 transition-all duration-300"
+      <section className="w-full max-w-4xl mt-8 relative h-[70vh] flex items-center justify-center">
+        {/* Botón de navegación arriba */}
+        <button
+          onClick={prevSlide}
+          aria-label="Anterior"
+          className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white text-indigo-600 rounded-full p-1 shadow-lg hover:scale-110 transition-all z-10"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-gray-800 opacity-70 hover:opacity-100 transition-opacity"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
 
-          <div
-            className="w-full flex transition-transform ease-in-out duration-500"
-            style={{ transform: `translateX(${translateValue}%)` }}
-          >
-            {slides.map((slide, index) => (
-              <div
-                key={index}
-                className="flex-1 p-4 flex flex-col items-center"
-                style={{ flex: `0 0 ${100 / itemsPerPage}%` }}
-              >
-                <div className="w-64 h-64 overflow-hidden rounded-md shadow-lg bg-white transform transition-transform duration-300 hover:scale-105">
-                  <img
-                    src={slide.image}
-                    alt={slide.title}
-                    className="h-full w-full object-cover"
-                  />
+        {/* Contenedor del carrusel */}
+        <div className="overflow-hidden w-full h-full relative">
+          {services.length > 0 ? (
+            <div
+              className="flex flex-col transition-transform duration-700 ease-in-out"
+              style={{
+                transform: `translateY(-${currentIndex * 100}%)`, // Desplazamiento correcto
+                height: "100%", // Mantiene la altura del contenedor
+              }}
+            >
+              {services.map((service) => (
+                <div
+                  key={service.serviceId}
+                  className="w-full h-full flex-shrink-0 flex flex-col items-center justify-center bg-indigo-50 rounded-xl p-6"
+                >
+                  {/* Imagen del servicio */}
+                  <div className="relative w-full h-3/5 max-w-lg rounded-xl shadow-lg overflow-hidden bg-white">
+                    <img
+                      src={`http://localhost:1022/Imgs/ImgServices/${service.serviceImage}`}
+                      alt={service.serviceName}
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                    <div className="absolute top-4 right-4 flex gap-3">
+                      <button
+                        onClick={() => navigate(`/actualizarServicios/${service.serviceId}`)}
+                        aria-label="Editar"
+                        className="bg-indigo-600 text-white p-3 rounded-full shadow hover:bg-indigo-700 transition"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        onClick={() => handleDelete(service.serviceId)}
+                        aria-label="Eliminar"
+                        className="bg-red-500 text-white p-3 rounded-full shadow hover:bg-red-600 transition"
+                      >
+                        ❌
+                      </button>
+                    </div>
+                  </div>
+                  {/* Nombre y descripción */}
+                  <div className="w-full max-w-lg text-center mt-6">
+                    <h2 className="text-2xl font-bold text-indigo-700 truncate">
+                      {service.serviceName}
+                    </h2>
+                    <p className="text-base text-gray-600 mt-4 leading-relaxed">
+                      {service.serviceDescription}
+                    </p>
+                  </div>
                 </div>
-                <h2 className="text-xl font-bold tracking-tight text-gray-800 mt-4">{slide.title}</h2>
-                <p className="text-sm text-gray-600 text-center max-w-xs mt-2">{slide.description}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Flecha derecha */}
-          <button
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 h-12 w-12 bg-transparent text-white rounded-full shadow-lg hover:bg-opacity-80 hover:scale-110 transition-all duration-300"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-gray-800 opacity-70 hover:opacity-100 transition-opacity"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-600 text-center text-lg">No hay servicios disponibles.</p>
+          )}
         </div>
-      </div>
+
+        {/* Botón de navegación abajo */}
+        <button
+          onClick={nextSlide}
+          aria-label="Siguiente"
+          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-indigo-600 rounded-full p-1 shadow-lg hover:scale-110 transition-all z-10"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </section>
 
       {/* Botón "Agregar Servicio" */}
       <button
-        onClick={() => navigate('/crearServicios')} // Redirige a CreateServices
-        className="mt-8 px-8 py-3 bg-black text-white font-semibold rounded-lg shadow-lg hover:bg-gray-800 hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+        onClick={() => navigate("/crearServicios")}
+        className="mt-12 mb-24 px-8 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 text-white text-lg font-bold rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transition-transform"
       >
-      Agregar Servicio
+        Agregar Servicio
       </button>
 
+      {/* Modal de confirmación */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity">
+          <div className="bg-white p-6 rounded-2xl shadow-xl w-80 animate-fadeIn">
+            <h2 className="text-xl font-semibold text-red-600 text-center mb-4">
+              ¿Deseas eliminar este servicio?
+            </h2>
+            <div className="flex justify-between gap-4">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="flex-1 px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex-1 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
