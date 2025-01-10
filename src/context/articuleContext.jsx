@@ -27,6 +27,8 @@ export const ArticleProvider = ({ children }) => {
         return { success: false, MessageE};
       }
     } catch (error) {
+      console.log(error.message);
+      
       return { success: false, error: error };
     }
   };

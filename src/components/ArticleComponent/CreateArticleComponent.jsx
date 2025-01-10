@@ -76,6 +76,7 @@ export default function RegistroArticulo() {
     formData.append('autores', data.autores);
     formData.append('resumen', data.resumen);
     formData.append('contenido', data.contenido);
+    formData.append('lentImge', imagenes.length);
 
     imagenes.forEach((img, index) => {
       formData.append(`imagen${index + 1}`, img.file);
