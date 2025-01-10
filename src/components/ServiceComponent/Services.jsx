@@ -60,115 +60,113 @@ const Services = () => {
     <div className="bg-gradient-to-b from-blue-50 to-indigo-100 min-h-screen flex flex-col items-center">
       {/* Encabezado */}
       <header className="w-full bg-transparent text-black py-6 text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-indigo-700">
           Nuestros Servicios
         </h1>
-        <p className="mt-2 text-lg font-medium">
+        <p className="mt-2 text-lg font-medium text-gray-600">
           Explora nuestra variedad de servicios diseñados para ti.
         </p>
       </header>
 
       {/* Carrusel */}
-      <section className="w-full max-w-4xl mt-8 relative h-96 flex items-center justify-center">
-      {/* Botón de navegación arriba */}
-      <button
-        onClick={prevSlide}
-        aria-label="Anterior"
-        className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white text-indigo-600 rounded-full p-1 shadow-lg hover:scale-110 transition-all z-10"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
+      <section className="w-full max-w-4xl mt-8 relative h-[70vh] flex items-center justify-center">
+        {/* Botón de navegación arriba */}
+        <button
+          onClick={prevSlide}
+          aria-label="Anterior"
+          className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white text-indigo-600 rounded-full p-1 shadow-lg hover:scale-110 transition-all z-10"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
 
-      {/* Contenedor del carrusel */}
-      <div className="overflow-hidden w-full h-full relative">
+        {/* Contenedor del carrusel */}
+        <div className="overflow-hidden w-full h-full relative">
           {services.length > 0 ? (
             <div
               className="flex flex-col transition-transform duration-700 ease-in-out"
               style={{
-                transform: `translateY(-${currentIndex * 100}%)`,
-                height: `${services.length * 100}%`,
+                transform: `translateY(-${currentIndex * 100}%)`, // Desplazamiento correcto
+                height: "100%", // Mantiene la altura del contenedor
               }}
             >
               {services.map((service) => (
                 <div
                   key={service.serviceId}
-                  className="w-full h-full flex-shrink-0 flex flex-col items-center bg-indigo-50 rounded-xl p-6"
+                  className="w-full h-full flex-shrink-0 flex flex-col items-center justify-center bg-indigo-50 rounded-xl p-6"
                 >
                   {/* Imagen del servicio */}
-                  <div className="relative w-full h-44 max-w-md rounded-xl shadow-lg overflow-hidden bg-white">
+                  <div className="relative w-full h-3/5 max-w-lg rounded-xl shadow-lg overflow-hidden bg-white">
                     <img
                       src={`http://localhost:1022/Imgs/ImgServices/${service.serviceImage}`}
                       alt={service.serviceName}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                     />
-                    <div className="absolute top-2 right-2 flex gap-2">
+                    <div className="absolute top-4 right-4 flex gap-3">
                       <button
                         onClick={() => navigate(`/actualizarServicios/${service.serviceId}`)}
                         aria-label="Editar"
-                        className="bg-indigo-600 text-white p-2 rounded-full shadow hover:bg-indigo-700 transition"
+                        className="bg-indigo-600 text-white p-3 rounded-full shadow hover:bg-indigo-700 transition"
                       >
                         ✏️
                       </button>
                       <button
                         onClick={() => handleDelete(service.serviceId)}
                         aria-label="Eliminar"
-                        className="bg-red-500 text-white p-2 rounded-full shadow hover:bg-red-600 transition"
+                        className="bg-red-500 text-white p-3 rounded-full shadow hover:bg-red-600 transition"
                       >
                         ❌
                       </button>
                     </div>
                   </div>
                   {/* Nombre y descripción */}
-                  <div className="w-full max-w-md text-center mt-4">
-                    <h2 className="text-xl font-semibold text-indigo-700 truncate">
+                  <div className="w-full max-w-lg text-center mt-6">
+                    <h2 className="text-2xl font-bold text-indigo-700 truncate">
                       {service.serviceName}
                     </h2>
-                    <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+                    <p className="text-base text-gray-600 mt-4 leading-relaxed">
                       {service.serviceDescription}
                     </p>
                   </div>
                 </div>
               ))}
-          </div>
-        ) : (
-          <p className="text-gray-600 text-center">No hay servicios disponibles.</p>
-        )}
-      </div>
+            </div>
+          ) : (
+            <p className="text-gray-600 text-center text-lg">No hay servicios disponibles.</p>
+          )}
+        </div>
 
-
-      {/* Botón de navegación abajo */}
-      <button
-        onClick={nextSlide}
-        aria-label="Siguiente"
-        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-indigo-600 rounded-full p-1 shadow-lg hover:scale-110 transition-all z-10"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
+        {/* Botón de navegación abajo */}
+        <button
+          onClick={nextSlide}
+          aria-label="Siguiente"
+          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-indigo-600 rounded-full p-1 shadow-lg hover:scale-110 transition-all z-10"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-    </section>
-
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </section>
 
       {/* Botón "Agregar Servicio" */}
       <button
         onClick={() => navigate("/crearServicios")}
-        className="mt-12 px-8 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 text-white text-lg font-bold rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transition-transform"
+        className="mt-12 mb-24 px-8 py-3 bg-gradient-to-r from-indigo-500 to-blue-500 text-white text-lg font-bold rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transition-transform"
       >
         Agregar Servicio
       </button>
