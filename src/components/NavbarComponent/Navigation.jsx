@@ -26,8 +26,11 @@ function NavLinks({ className = '', itemClassName = '', onClick }) {
             <Link to="/" onClick={onClick}>
               {link.name}
             </Link>
-          ) : link.name === 'Servicios' ? (
-
+          ) : link.name === 'Quienes somos' ? (
+            <Link to="/quienesSomos" onClick={onClick}>
+              {link.name}
+            </Link> )
+            : link.name === 'Servicios' ? (
             <Link to="/servicios" onClick={onClick}>
               {link.name}
             </Link>
