@@ -120,25 +120,6 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-
-            {/* Newsletter Section */}
-            <div className="single-footer">
-              <h2 className="text-2xl font-bold text-white mb-6">Newsletter</h2>
-              <p className="text-gray-400 mb-6">
-                Subscribe to our newsletter for the latest updates and offers.
-              </p>
-              <form action="#" method="post" className="flex items-center">
-                <input
-                  type="email"
-                  className="px-4 py-2 w-full bg-gray-800 text-gray-200 border border-gray-600 rounded-l-lg focus:outline-none"
-                  placeholder="Email Address"
-                  required
-                />
-                <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg text-white transition-colors duration-300">
-                  <i className="icofont-paper-plane"></i>
-                </button>
-              </form>
-            </div>
           </div>
         </div>
       </div>

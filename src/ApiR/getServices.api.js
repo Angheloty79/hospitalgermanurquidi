@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const createServices = async (dataServices) => 
-  await axios.post("http://localhost:1022/api/postServicesRegister", dataServices );
+export const getServices = async (dataServices) => 
+    await axios.get("http://localhost:1022/api/getServices", dataServices );
 
 
     export const uploadImage  = async (id,file) => {
@@ -13,4 +13,3 @@ export const createServices = async (dataServices) =>
 
   return response; 
 };
-

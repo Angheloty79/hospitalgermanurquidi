@@ -7,7 +7,7 @@ const links = [
   { name: 'Inicio', href: '#' },
   { name: 'Quienes somos', href: '#' },
   { name: 'Servicios', href: '#' },
-  { name: 'Actividades', href: '#' },
+  { name: 'Eventos', href: '#' },
   { name: 'Articulos', href: '#' },
   { name: 'Contactanos', href: '#' },
 ];
@@ -19,15 +19,30 @@ function NavLinks({ className = '', itemClassName = '', onClick }) {
       {links.map((link) => (
         <li key={link.name} className={`hover:text-orange-400 ${itemClassName}`}>
           {link.name === 'Contactanos' ? (
-            <Link to="/contactanos" onClick={onClick}>{link.name}</Link>
+            <Link to="/contactanos" onClick={onClick}>
+              {link.name}
+            </Link>
           ) : link.name === 'Inicio' ? (
-            <Link to="/" onClick={onClick}>{link.name}</Link>
+            <Link to="/" onClick={onClick}>
+              {link.name}
+            </Link>
           ) : link.name === 'Servicios' ? (
-            <Link to="/servicios" onClick={onClick}>{link.name}</Link>
-          ) :  link.name === 'Articulos' ? (
-            <Link to="/ariticulo" onClick={onClick}>{link.name}</Link>
+
+            <Link to="/servicios" onClick={onClick}>
+              {link.name}
+            </Link>
+          ) : link.name === 'Eventos' ? (
+            <Link to="/actividades" onClick={onClick}>
+              {link.name}
+            </Link>
+          ) : link.name === 'Articulos' ? (
+            <Link to="/articulo" onClick={onClick}>
+              {link.name}
+            </Link>
           ) : (
-            <a href={link.href} onClick={onClick}>{link.name}</a>
+            <a href={link.href} onClick={onClick}>
+              {link.name}
+            </a>
           )}
         </li>
       ))}
