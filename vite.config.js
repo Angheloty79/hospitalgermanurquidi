@@ -11,8 +11,5 @@ export default defineConfig({
     },
   },
   assetsInclude: ["**/*.jpg", "**/*.jpeg", "**/*.png", "**/*.JPG"],
-  server: {
-    port: 5173, // Cambia el puerto si prefieres otro cercano
-    host: "127.0.0.1", // Host para asegurar compatibilidad
-  },
 });
+

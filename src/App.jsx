@@ -41,6 +41,7 @@ function App() {
       </ServiceProvider>
       <Footer />
     </ActivityProvider>
+
   );
 }
 
