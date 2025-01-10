@@ -11,6 +11,7 @@ import ArticulePage from "./pages/ArticlePage";
 import Activity from "./components/ActivityComponent/Activity";
 import ActivityList from "./components/ActivityComponent/ActivityList";
 import ActivityUpdate from "./components/ActivityComponent/ActivityUpdate";
+import WhoPage from "./pages/WhoPage";
 
 // Contextos para compartir los datos
 import { ArticleProvider } from "./context/articuleContext";
@@ -35,6 +36,7 @@ function App() {
               <Route path="/crearServicios" element={<CreateServices />} />
               <Route path="/actualizarServicios/:id" element={<UpdateServices />} />
               <Route path="/articulo" element={<ArticulePage />} />
+              <Route path="/quienesSomos" element={<WhoPage/>}/>
             </Routes>
           </ContactUsProvider>
         </ArticleProvider>

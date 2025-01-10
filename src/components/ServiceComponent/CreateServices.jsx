@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importar useNavigate
 import { motion, AnimatePresence } from "framer-motion";
@@ -48,6 +49,7 @@ export default function CreateServices() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     // Crear un FormData para enviar datos y archivos
     const formData = new FormData();
